@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% from "_macros.html" import steps %}
+{% block title %}Cart{% endblock %}
+{% block content %}
+<div class="mb-3"><div class="eyebrow">Your bag</div><h1 class="page-title">Shopping Cart</h1></div>
+{{ steps(1) }}
+{% if items %}
+<div class="row g-4">
+  <div class="col-lg-8"><div class="glass overflow-hidden">
+    {% for i in items %}
+    <div class="cart-row">
+      <a class="c-img" href="/products/{{ i.product_id }}"><img class="thumb" style="width:72px;height:72px" src="{{ img(i.image_url) }}" alt="{{ i.name }}" onerror="this.onerror=null;this.src='/static/images/placeholder.svg'"></a>
+      <div class="c-info"><a class="fw-semibold text-light" href="/products/{{ i.product_id }}">{{ i.name }}</a><div class="small text-muted c-unit">{{ i.price|inr }} each</div></div>
+      <form method="post" action="/cart/update/{{ i.product_id }}" class="c-qty">
+        <div class="qty-sm"><button name="action" value="dec" aria-label="Decrease quantity"><i class="bi bi-dash"></i></button><span>{{ i.quantity }}</span><button name="action" value="inc" aria-label="Increase quantity"><i class="bi bi-plus"></i></button></div>
+      </form>
+      <div class="c-price fw-bold" style="font-family:var(--font-head);min-width:100px;text-align:right">{{ i.line_total|inr }}</div>
+      <form method="post" action="/cart/remove/{{ i.product_id }}" class="c-rm"><button class="btn btn-danger-soft btn-icon" aria-label="Remove {{ i.name }}" data-bs-toggle="tooltip" title="Remove"><i class="bi bi-trash3"></i></button></form>
+    </div>
+    {% endfor %}
+  </div>
+  <a href="/products" class="btn btn-ghost mt-3"><i class="bi bi-arrow-left"></i> Continue shopping</a></div>
+  <div class="col-lg-4"><aside class="glass glass-pad summary">
+    <h5 class="mb-3">Order Summary</h5>
+    <div class="sum-line"><span>Subtotal</span><span>{{ total|inr }}</span></div>
+    <div class="sum-line"><span>Shipping</span><span class="text-success">Free</span></div>
+    <div class="sum-total"><span>Total</span><span class="text-grad">{{ total|inr }}</span></div>
+    <a href="/checkout" class="btn btn-glow btn-lg w-100 mt-4">Proceed to Checkout <i class="bi bi-arrow-right ms-1"></i></a>
+    <div class="trust mt-3 justify-content-center"><span><i class="bi bi-shield-lock"></i>Secure checkout</span></div>
+  </aside></div>
+</div>
+{% else %}
+<div class="glass empty"><div class="e-ic"><i class="bi bi-bag"></i></div><h4>Your cart is empty</h4><p class="text-muted mb-3">Looks like you haven't added anything yet.</p><a href="/products" class="btn btn-glow">Browse products</a></div>
+{% endif %}
+{% endblock %}

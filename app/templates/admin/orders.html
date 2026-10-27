@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Manage Orders{% endblock %}
+{% block content %}
+<div class="admin-head"><div><div class="eyebrow">Admin</div><h1 class="page-title">Manage Orders</h1></div><span class="chip"><i class="bi bi-receipt"></i> {{ orders|length }} orders</span></div>
+{% set active='orders' %}{% include "admin/_nav.html" %}
+<div class="glass table-wrap"><table class="table cc-table">
+<thead><tr><th>Order</th><th>Customer</th><th>Date</th><th>Amount</th><th>Status</th><th class="text-end">Update status</th></tr></thead>
+<tbody>{% for o in orders %}<tr>
+  <td><a href="/orders/{{ o.id }}" class="fw-semibold">#{{ o.id }}</a></td>
+  <td>{{ o.customer_name }}<div class="small text-muted">{{ o.email }}</div></td>
+  <td class="text-muted">{{ o.created_at.strftime('%d %b %Y') }}</td><td class="fw-semibold">{{ o.total_amount|inr }}</td>
+  <td><span class="status status-{{ o.status|lower }}">{{ o.status }}</span></td>
+  <td><form method="post" action="/admin/orders/{{ o.id }}/status" class="d-flex gap-2 justify-content-end" style="min-width:220px">
+    <select name="status" class="form-select form-select-sm" aria-label="Status for order {{ o.id }}">{% for s in statuses %}<option {% if s==o.status %}selected{% endif %}>{{ s }}</option>{% endfor %}</select>
+    <button class="btn btn-glow btn-sm">Save</button></form></td>
+</tr>{% else %}<tr><td colspan="6" class="text-center text-muted py-5">No orders yet.</td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}

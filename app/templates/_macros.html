@@ -1,0 +1,37 @@
+{% macro product_card(p) %}
+<div class="col reveal">
+  <article class="card product-card">
+    <a href="/products/{{ p.id }}" class="p-media" aria-label="View {{ p.name }}">
+      <img data-skel loading="lazy" src="{{ img(p.image_url) }}" alt="{{ p.name }}" onerror="this.onerror=null;this.src='/static/images/placeholder.svg'">
+      <span class="chip">{{ p.category }}</span>
+      {% if p.stock <= 0 %}<span class="chip red stock-flag">Out of stock</span>
+      {% elif p.stock <= 5 %}<span class="chip amber stock-flag">Only {{ p.stock }} left</span>{% endif %}
+    </a>
+    <div class="p-body">
+      <a class="p-name" href="/products/{{ p.id }}">{{ p.name }}</a>
+      <small class="{{ 'text-success' if p.stock > 5 else 'text-muted' }}">{% if p.stock > 0 %}<i class="bi bi-check2-circle"></i> In stock ({{ p.stock }}){% else %}<i class="bi bi-x-circle"></i> Unavailable{% endif %}</small>
+      <div class="p-price">{{ p.price|inr }}</div>
+    </div>
+    <div class="p-actions">
+      <a class="btn btn-ghost" href="/products/{{ p.id }}">Details</a>
+      {% if p.stock > 0 %}
+      <form method="post" action="/cart/add/{{ p.id }}"><button class="btn btn-glow"><i class="bi bi-bag-plus"></i> Add</button></form>
+      {% else %}<button class="btn btn-ghost" disabled>Sold out</button>{% endif %}
+    </div>
+  </article>
+</div>
+{% endmacro %}
+
+{% macro empty(icon, title, text) %}
+<div class="glass empty"><div class="e-ic"><i class="bi {{ icon }}"></i></div><h4>{{ title }}</h4><p class="text-muted mb-3">{{ text }}</p>{{ caller() if caller }}</div>
+{% endmacro %}
+
+{% macro steps(current) %}
+{% set labels = ['Cart','Details','Payment','Complete'] %}
+<div class="steps" aria-label="Checkout progress">
+  {% for l in labels %}
+    <div class="step {{ 'done' if loop.index < current else 'now' if loop.index == current }}"><span class="n">{% if loop.index < current %}<i class="bi bi-check-lg"></i>{% else %}{{ '%02d'|format(loop.index) }}{% endif %}</span>{{ l }}</div>
+    {% if not loop.last %}<span class="step-bar {{ 'done' if loop.index < current }}"></span>{% endif %}
+  {% endfor %}
+</div>
+{% endmacro %}

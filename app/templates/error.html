@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Page not found' if code == 404 else 'Access denied' if code in (401,403) else 'Something went wrong' }}{% endblock %}
+{% block content %}
+<div class="text-center py-5">
+  <div class="err-code">{{ code }}</div>
+  {% if code == 404 %}<h2 class="mt-2">We couldn't find that page</h2><p class="text-muted">The page or product you're looking for doesn't exist or was removed.</p>
+  {% elif code in (401, 403) %}<h2 class="mt-2">Access denied</h2><p class="text-muted">You don't have permission to view this page.</p>
+  {% else %}<h2 class="mt-2">Something went wrong</h2><p class="text-muted">Please try again in a moment.</p>{% endif %}
+  <div class="d-flex gap-3 justify-content-center mt-4 flex-wrap"><a href="/" class="btn btn-glow btn-lg">Go Home</a><a href="/products" class="btn btn-ghost btn-lg">Browse Products</a></div>
+</div>
+{% endblock %}

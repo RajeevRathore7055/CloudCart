@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Command Center{% endblock %}
+{% block content %}
+<div class="admin-head">
+  <div><div class="eyebrow">Admin</div><h1 class="page-title">CloudCart <span class="text-grad">Command Center</span></h1></div>
+  <span class="chip green"><span class="dot"></span> Application online</span>
+</div>
+{% set active='dashboard' %}{% include "admin/_nav.html" %}
+<div class="row g-3 g-lg-4 mb-4">
+  <div class="col-6 col-xl-3 reveal"><div class="glass stat"><div class="ic-box"><i class="bi bi-people"></i></div><div class="lbl">Total Users</div><div class="val">{{ stats.users }}</div></div></div>
+  <div class="col-6 col-xl-3 reveal"><div class="glass stat" style="--glow:rgba(34,211,238,.35)"><div class="ic-box cyan"><i class="bi bi-box-seam"></i></div><div class="lbl">Total Products</div><div class="val">{{ stats.products }}</div></div></div>
+  <div class="col-6 col-xl-3 reveal"><div class="glass stat" style="--glow:rgba(139,92,246,.4)"><div class="ic-box violet"><i class="bi bi-receipt"></i></div><div class="lbl">Total Orders</div><div class="val">{{ stats.orders }}</div></div></div>
+  <div class="col-6 col-xl-3 reveal"><div class="glass stat hot" style="--glow:rgba(52,211,153,.35)"><div class="ic-box green"><i class="bi bi-currency-rupee"></i></div><div class="lbl">Total Sales</div><div class="val text-grad">{{ stats.sales|inr }}</div></div></div>
+</div>
+<div class="row g-4">
+  <div class="col-xl-8">
+    <div class="section-head"><div><div class="eyebrow">Activity</div><h2>Recent Orders</h2></div><a class="btn btn-ghost btn-sm" href="/admin/orders">Manage all</a></div>
+    <div class="glass table-wrap"><table class="table cc-table">
+      <thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Status</th></tr></thead>
+      <tbody>{% for o in recent %}<tr><td><a href="/orders/{{ o.id }}" class="fw-semibold">#{{ o.id }}</a></td><td>{{ o.customer_name }}</td><td>{{ o.total_amount|inr }}</td><td><span class="status status-{{ o.status|lower }}">{{ o.status }}</span></td></tr>
+      {% else %}<tr><td colspan="4" class="text-center text-muted py-4">No orders yet.</td></tr>{% endfor %}</tbody></table></div>
+  </div>
+  <div class="col-xl-4">
+    <div class="section-head"><div><div class="eyebrow">Infrastructure</div><h2>Cloud Stack</h2></div></div>
+    <div class="d-grid gap-2">
+      <div class="glass svc-tile"><div class="ic-box mb-0"><i class="bi bi-hdd-network"></i></div><div><b>Amazon EC2</b><small>FastAPI application server</small></div></div>
+      <div class="glass svc-tile"><div class="ic-box cyan mb-0"><i class="bi bi-database"></i></div><div><b>Amazon RDS</b><small>Managed MySQL database</small></div></div>
+      <div class="glass svc-tile"><div class="ic-box violet mb-0"><i class="bi bi-bucket"></i></div><div><b>Amazon S3</b><small>Product image storage</small></div></div>
+      <div class="glass svc-tile"><div class="ic-box green mb-0"><i class="bi bi-activity"></i></div><div><b>Amazon CloudWatch</b><small>Monitoring and logs</small></div></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

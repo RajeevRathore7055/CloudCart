@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="auth"><div class="glass auth-card">
+  <div class="auth-brand">
+    <span class="brand-mark" style="width:54px;height:54px;font-size:1.6rem"><i class="bi bi-cloud-fill"></i></span>
+    <h2 class="mb-1" style="font-size:2rem;font-weight:700">Welcome back to<br><span class="text-grad">CloudCart</span></h2>
+    <p class="text-muted">Cloud-Powered E-Commerce Platform</p>
+    <ul class="p-0 auth-points"><li><i class="bi bi-shield-lock"></i> Encrypted, hashed credentials</li><li><i class="bi bi-lightning-charge"></i> Fast, scalable cloud backend</li><li><i class="bi bi-bag-check"></i> Track every order in real time</li></ul>
+  </div>
+  <div class="auth-form">
+    <div class="eyebrow">Sign in</div><h1 class="mb-4" style="font-size:1.8rem;font-weight:700">Login to your account</h1>
+    {% for e in errors %}<div class="alert-cc" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>{{ e }}</div>{% endfor %}
+    <form method="post" action="/login">
+      <input type="hidden" name="next" value="{{ next }}">
+      <div class="mb-3"><label class="form-label" for="email">Email</label><div class="input-icon"><i class="bi bi-envelope"></i><input id="email" type="email" name="email" value="{{ email }}" class="form-control" placeholder="you@example.com" autocomplete="email" required></div></div>
+      <div class="mb-4"><label class="form-label" for="password">Password</label><div class="input-icon"><i class="bi bi-lock"></i><input id="password" type="password" name="password" class="form-control" placeholder="Your password" autocomplete="current-password" required></div></div>
+      <button class="btn btn-glow btn-lg w-100">Login</button>
+    </form>
+    <p class="mt-4 mb-0 text-muted small text-center">New to CloudCart? <a href="/register">Create an account</a></p>
+  </div>
+</div></div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Users{% endblock %}
+{% block content %}
+<div class="admin-head"><div><div class="eyebrow">Admin</div><h1 class="page-title">Users</h1></div><span class="chip"><i class="bi bi-people"></i> {{ users|length }} total</span></div>
+{% set active='users' %}{% include "admin/_nav.html" %}
+<div class="glass table-wrap"><table class="table cc-table">
+<thead><tr><th>User</th><th>Email</th><th>Role</th><th>Orders</th><th>Joined</th></tr></thead>
+<tbody>{% for u in users %}<tr>
+  <td><div class="d-flex align-items-center gap-2"><span class="avatar" style="margin:0">{{ u.name[:1]|upper }}</span><span class="fw-semibold">{{ u.name }}</span></div></td>
+  <td class="text-muted">{{ u.email }}</td><td><span class="chip {{ 'violet' if u.role=='admin' else '' }}">{{ u.role }}</span></td><td>{{ u.orders }}</td><td class="text-muted">{{ u.created_at.strftime('%d %b %Y') }}</td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}

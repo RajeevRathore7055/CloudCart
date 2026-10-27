@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% from "_macros.html" import steps %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<div class="mb-3"><div class="eyebrow">Almost there</div><h1 class="page-title">Checkout</h1></div>
+{{ steps(2) }}
+{% for e in errors %}<div class="alert-cc" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>{{ e }}</div>{% endfor %}
+<div class="row g-4">
+  <div class="col-lg-7">
+    <form method="post" action="/checkout">
+      <div class="glass glass-pad mb-4">
+        <h5 class="mb-4"><span class="sec-num">01</span>Delivery Information</h5>
+        <div class="mb-3"><label class="form-label" for="cname">Full name</label><div class="input-icon"><i class="bi bi-person"></i><input id="cname" name="name" class="form-control" value="{{ form.name or '' }}" required></div></div>
+        <div class="mb-3"><label class="form-label" for="caddr">Address</label><textarea id="caddr" name="address" rows="3" class="form-control" placeholder="House no, street, city, PIN" required>{{ form.address or '' }}</textarea></div>
+        <div><label class="form-label" for="cphone">Phone</label><div class="input-icon"><i class="bi bi-telephone"></i><input id="cphone" name="phone" class="form-control" value="{{ form.phone or '' }}" inputmode="tel" required></div></div>
+      </div>
+      <div class="glass glass-pad">
+        <h5 class="mb-3"><span class="sec-num">03</span>Payment</h5>
+        <div class="pay-box mb-4"><div class="ic-box violet mb-0"><i class="bi bi-credit-card-2-front"></i></div>
+          <div><b>Simulated payment</b><div class="small text-muted">This is a demo. No real money is charged and no card details are needed.</div></div></div>
+        <button class="btn btn-glow btn-lg w-100"><i class="bi bi-lock-fill me-1"></i> Place Order - {{ total|inr }}</button>
+      </div>
+    </form>
+  </div>
+  <div class="col-lg-5"><aside class="glass glass-pad summary">
+    <h5 class="mb-3"><span class="sec-num">02</span>Order Summary</h5>
+    {% for i in items %}
+    <div class="d-flex align-items-center gap-3 py-2 {{ 'border-top' if not loop.first }}" style="border-color:var(--line)!important">
+      <img class="thumb" src="{{ img(i.image_url) }}" alt="{{ i.name }}" onerror="this.onerror=null;this.src='/static/images/placeholder.svg'">
+      <div class="flex-grow-1"><div class="small fw-semibold">{{ i.name }}</div><div class="small text-muted">Qty {{ i.quantity }}</div></div>
+      <div class="fw-semibold">{{ i.line_total|inr }}</div>
+    </div>{% endfor %}
+    <div class="divider"></div>
+    <div class="sum-line"><span>Subtotal</span><span>{{ total|inr }}</span></div>
+    <div class="sum-line"><span>Shipping</span><span class="text-success">Free</span></div>
+    <div class="sum-total"><span>Total</span><span class="text-grad">{{ total|inr }}</span></div>
+  </aside></div>
+</div>
+{% endblock %}

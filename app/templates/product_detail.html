@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "_macros.html" import product_card %}
+{% block title %}{{ p.name }}{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="/products">Products</a></li>
+<li class="breadcrumb-item"><a href="/products?category={{ p.category_id }}">{{ p.category }}</a></li><li class="breadcrumb-item active" aria-current="page">{{ p.name }}</li></ol></nav>
+<div class="row g-4 g-lg-5 align-items-start">
+  <div class="col-lg-6"><div class="detail-media"><img src="{{ img(p.image_url) }}" alt="{{ p.name }}" onerror="this.onerror=null;this.src='/static/images/placeholder.svg'"></div></div>
+  <div class="col-lg-6">
+    <span class="chip cyan mb-3"><i class="bi bi-tag"></i> {{ p.category }}</span>
+    <h1 class="mb-2" style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700">{{ p.name }}</h1>
+    <div class="detail-price text-grad my-3">{{ p.price|inr }}</div>
+    <p class="text-muted mb-3" style="line-height:1.7">{{ p.description }}</p>
+    <p>{% if p.stock > 0 %}<span class="chip green"><span class="dot"></span> In stock: {{ p.stock }} units</span>{% else %}<span class="chip red"><i class="bi bi-x-circle"></i> Out of stock</span>{% endif %}</p>
+    {% if p.stock > 0 %}
+    <form method="post" action="/cart/add/{{ p.id }}" class="d-flex flex-wrap align-items-center gap-3 mt-4">
+      <div class="qty" data-qty><button type="button" data-step="-1" aria-label="Decrease quantity"><i class="bi bi-dash"></i></button>
+        <input type="number" name="quantity" value="1" min="1" max="{{ p.stock }}" aria-label="Quantity"><button type="button" data-step="1" aria-label="Increase quantity"><i class="bi bi-plus"></i></button></div>
+      <button class="btn btn-glow btn-lg flex-grow-1 flex-sm-grow-0"><i class="bi bi-bag-plus me-1"></i> Add to Cart</button>
+    </form>{% endif %}
+    <div class="divider my-4"></div>
+    <div class="trust"><span><i class="bi bi-shield-check"></i>Secure checkout</span><span><i class="bi bi-truck"></i>Fast delivery</span><span><i class="bi bi-cloud-check"></i>Cloud-backed inventory</span></div>
+  </div>
+</div>
+{% if related %}<section class="mt-5"><div class="section-head"><div><div class="eyebrow">More like this</div><h2>Related products</h2></div></div>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">{% for r in related %}{{ product_card(r) }}{% endfor %}</div></section>{% endif %}
+{% endblock %}

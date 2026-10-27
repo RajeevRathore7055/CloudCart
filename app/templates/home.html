@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% from "_macros.html" import product_card %}
+{% block title %}Home{% endblock %}
+{% set cat_icons = {'Laptops':'bi-laptop','Mobiles':'bi-phone','Audio':'bi-headphones','Wearables':'bi-smartwatch','Accessories':'bi-keyboard','Bags':'bi-backpack2'} %}
+{% block content %}
+<section class="hero mb-5">
+  <svg class="hero-visual" viewBox="0 0 520 380" fill="none" aria-hidden="true">
+    <defs><linearGradient id="cg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset=".5" stop-color="#3b82f6"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+    <g class="float-a"><path d="M150 250a58 58 0 0 1 8-115 80 80 0 0 1 154-12 66 66 0 0 1 22 127z" fill="url(#cg)" fill-opacity=".22" stroke="url(#cg)" stroke-width="2.5"/></g>
+    <g stroke="#60a5fa" stroke-opacity=".6" stroke-width="1.5" class="flow-line"><path d="M240 260V330M240 300H110M240 300H400M110 300V345M400 300V345"/></g>
+    <g class="float-b"><circle cx="110" cy="345" r="9" fill="#22d3ee"/><circle cx="400" cy="345" r="9" fill="#a78bfa"/><circle cx="240" cy="330" r="9" fill="#3b82f6"/></g>
+    <g class="float-c" fill="#e2e8f0" fill-opacity=".9"><rect x="195" y="170" width="90" height="10" rx="5" fill-opacity=".55"/><rect x="215" y="192" width="50" height="10" rx="5" fill-opacity=".35"/></g>
+  </svg>
+  <span class="particle" style="left:55%;bottom:12%;animation-delay:0s"></span><span class="particle" style="left:68%;bottom:6%;animation-delay:2.5s"></span>
+  <span class="particle" style="left:80%;bottom:15%;animation-delay:5s"></span><span class="particle" style="left:45%;bottom:4%;animation-delay:7s"></span>
+  <div class="hero-copy">
+  <span class="chip cyan mb-3"><span class="dot"></span> Cloud-native commerce</span>
+  <h1 class="mb-3">Shop Smarter.<br><span class="text-grad">Powered by the Cloud.</span></h1>
+  <p class="lead mb-4">Experience next-generation commerce powered by scalable cloud infrastructure.</p>
+  <div class="d-flex flex-wrap gap-3">
+    <a href="/products" class="btn btn-glow btn-lg">Shop Now <i class="bi bi-arrow-right ms-1"></i></a>
+    <a href="#featured" class="btn btn-ghost btn-lg">Explore Products</a>
+  </div>
+  </div>
+</section>
+
+<section class="mb-5 reveal" aria-labelledby="cats">
+  <div class="section-head"><div><div class="eyebrow">Browse</div><h2 id="cats">Shop by Category</h2></div></div>
+  <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3">
+    {% for c in all_categories %}
+    <div class="col"><a class="glass cat-tile" href="/products?category={{ c.id }}"><i class="bi {{ cat_icons.get(c.name, 'bi-grid') }}"></i><span class="fw-semibold small">{{ c.name }}</span></a></div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="mb-5" id="featured" aria-labelledby="feat">
+  <div class="section-head"><div><div class="eyebrow">Handpicked</div><h2 id="feat">Featured Products</h2></div><a href="/products" class="btn btn-ghost btn-sm">View all <i class="bi bi-arrow-right"></i></a></div>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+    {% for p in featured %}{{ product_card(p) }}{% else %}
+    <div class="col-12"><div class="glass empty"><div class="e-ic"><i class="bi bi-box-seam"></i></div><h5>No featured products yet</h5><p class="text-muted mb-0">Check back soon.</p></div></div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="mb-4 reveal" aria-labelledby="cloud">
+  <div class="section-head"><div><div class="eyebrow">Architecture</div><h2 id="cloud">Powered by Cloud</h2></div></div>
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3"><div class="glass feature"><div class="ic-box"><i class="bi bi-cloud-check"></i></div><h6>Cloud Infrastructure</h6><p class="small text-muted mb-0">Hosted on AWS EC2 with a managed RDS database.</p></div></div>
+    <div class="col-6 col-lg-3"><div class="glass feature"><div class="ic-box cyan"><i class="bi bi-lightning-charge"></i></div><h6>Elastic Scaling</h6><p class="small text-muted mb-0">Designed for load balancing and auto scaling.</p></div></div>
+    <div class="col-6 col-lg-3"><div class="glass feature"><div class="ic-box violet"><i class="bi bi-shield-lock"></i></div><h6>Secure Access</h6><p class="small text-muted mb-0">Hashed passwords, IAM roles and security groups.</p></div></div>
+    <div class="col-6 col-lg-3"><div class="glass feature"><div class="ic-box green"><i class="bi bi-activity"></i></div><h6>Real-Time Monitoring</h6><p class="small text-muted mb-0">Metrics and logs tracked with Amazon CloudWatch.</p></div></div>
+  </div>
+  <div class="glass glass-pad"><div class="arch-flow">
+    <span class="arch-node"><i class="bi bi-person"></i> User</span><i class="bi bi-arrow-right arch-arrow"></i>
+    <span class="arch-node"><i class="bi bi-globe2"></i> CloudFront</span><i class="bi bi-arrow-right arch-arrow"></i>
+    <span class="arch-node"><i class="bi bi-diagram-3"></i> Load Balancer</span><i class="bi bi-arrow-right arch-arrow"></i>
+    <span class="arch-node"><i class="bi bi-hdd-network"></i> EC2 App</span><i class="bi bi-arrow-right arch-arrow"></i>
+    <span class="arch-node"><i class="bi bi-database"></i> RDS MySQL</span>
+  </div></div>
+</section>
+{% endblock %}

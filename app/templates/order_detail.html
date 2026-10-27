@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% from "_macros.html" import steps %}
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block content %}
+{% if placed %}
+{{ steps(5) }}
+<section class="glass success-wrap mb-4">
+  <svg class="check check-glow" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="26"/><path d="M16 29l8 8 16-17"/></svg>
+  <h1 class="page-title">Order Confirmed</h1>
+  <p class="text-muted mb-0">Your order has been successfully placed.</p>
+  <div class="kv" style="max-width:640px;margin-inline:auto">
+    <div><small>Order ID</small><b>#{{ order.id }}</b></div>
+    <div><small>Total</small><b class="text-grad">{{ order.total_amount|inr }}</b></div>
+    <div><small>Status</small><span class="status status-{{ order.status|lower }} mt-1">{{ order.status }}</span></div>
+  </div>
+  <div class="d-flex flex-wrap gap-3 justify-content-center mt-4"><a href="/products" class="btn btn-glow btn-lg">Continue Shopping</a><a href="/orders" class="btn btn-ghost btn-lg">View Orders</a></div>
+</section>
+{% else %}
+<div class="admin-head"><div><div class="eyebrow">Order details</div><h1 class="page-title">Order #{{ order.id }}</h1></div><span class="status status-{{ order.status|lower }}">{{ order.status }}</span></div>
+{% endif %}
+
+<div class="glass glass-pad mb-4">
+  <div class="tracker">
+    {% for s in statuses %}<div class="t-step {{ 'on' if loop.index0 <= statuses.index(order.status) }}"><div class="n">{% if loop.index0 <= statuses.index(order.status) %}<i class="bi bi-check-lg"></i>{% else %}{{ loop.index }}{% endif %}</div>{{ s }}</div>{% endfor %}
+  </div>
+</div>
+<div class="row g-4">
+  <div class="col-lg-8"><div class="glass table-wrap"><table class="table cc-table">
+    <thead><tr><th>Item</th><th>Price</th><th>Qty</th><th class="text-end">Subtotal</th></tr></thead>
+    <tbody>{% for i in items %}<tr><td class="fw-semibold">{{ i.product_name }}</td><td>{{ i.unit_price|inr }}</td><td>{{ i.quantity }}</td><td class="text-end">{{ (i.unit_price * i.quantity)|inr }}</td></tr>{% endfor %}</tbody>
+    <tfoot><tr><td colspan="3" class="text-end fw-bold">Total</td><td class="text-end fw-bold text-grad fs-5">{{ order.total_amount|inr }}</td></tr></tfoot>
+  </table></div></div>
+  <div class="col-lg-4"><div class="glass glass-pad">
+    <h6 class="mb-3"><i class="bi bi-geo-alt text-info me-1"></i>Delivery details</h6>
+    <p class="mb-1 fw-semibold">{{ order.customer_name }}</p><p class="mb-1 text-muted">{{ order.address }}</p><p class="mb-3 text-muted">{{ order.phone }}</p>
+    <div class="divider"></div>
+    <div class="small text-muted mb-1">Placed on {{ order.created_at.strftime('%d %b %Y, %H:%M') }}</div>
+    <div class="small text-muted">Payment: <span class="chip green">{{ order.payment_status }}</span></div>
+  </div></div>
+</div>
+{% if not placed %}<a href="/orders" class="btn btn-ghost mt-4"><i class="bi bi-arrow-left"></i> Back to orders</a>{% endif %}
+{% endblock %}

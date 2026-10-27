@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="auth"><div class="glass auth-card">
+  <div class="auth-brand">
+    <span class="brand-mark" style="width:54px;height:54px;font-size:1.6rem"><i class="bi bi-cloud-fill"></i></span>
+    <h2 class="mb-1" style="font-size:2rem;font-weight:700">Join the future of<br><span class="text-grad">cloud commerce</span></h2>
+    <p class="text-muted">Create your free CloudCart account in seconds.</p>
+    <ul class="p-0 auth-points"><li><i class="bi bi-bag-heart"></i> Save your cart and order history</li><li><i class="bi bi-shield-check"></i> Secure account protection</li><li><i class="bi bi-rocket-takeoff"></i> Checkout in a few clicks</li></ul>
+  </div>
+  <div class="auth-form">
+    <div class="eyebrow">Get started</div><h1 class="mb-4" style="font-size:1.8rem;font-weight:700">Create account</h1>
+    {% for e in errors %}<div class="alert-cc" role="alert"><i class="bi bi-exclamation-triangle-fill"></i>{{ e }}</div>{% endfor %}
+    <form method="post" action="/register">
+      <div class="mb-3"><label class="form-label" for="name">Full name</label><div class="input-icon"><i class="bi bi-person"></i><input id="name" name="name" value="{{ form.name }}" class="form-control" autocomplete="name" required></div></div>
+      <div class="mb-3"><label class="form-label" for="email">Email</label><div class="input-icon"><i class="bi bi-envelope"></i><input id="email" type="email" name="email" value="{{ form.email }}" class="form-control" autocomplete="email" required></div></div>
+      <div class="row g-3 mb-4">
+        <div class="col-sm-6"><label class="form-label" for="password">Password (min 6)</label><div class="input-icon"><i class="bi bi-lock"></i><input id="password" type="password" name="password" class="form-control" autocomplete="new-password" required></div></div>
+        <div class="col-sm-6"><label class="form-label" for="confirm">Confirm password</label><div class="input-icon"><i class="bi bi-lock-fill"></i><input id="confirm" type="password" name="confirm" class="form-control" autocomplete="new-password" required></div></div>
+      </div>
+      <button class="btn btn-glow btn-lg w-100">Register</button>
+    </form>
+    <p class="mt-4 mb-0 text-muted small text-center">Already registered? <a href="/login">Login</a></p>
+  </div>
+</div></div>
+{% endblock %}

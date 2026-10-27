@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% from "_macros.html" import product_card %}
+{% block title %}Products{% endblock %}
+{% block content %}
+<div class="mb-4"><div class="eyebrow">Catalog</div><h1 class="page-title">All Products</h1></div>
+
+<form class="glass filter-bar mb-3" method="get" action="/products">
+  <div class="row g-2 align-items-center">
+    <div class="col-12 col-md-4"><div class="input-icon"><i class="bi bi-search"></i><input class="form-control" name="q" value="{{ q }}" placeholder="Search products..." aria-label="Search"></div></div>
+    <div class="col-6 col-md-3">
+      <select class="form-select" name="category" aria-label="Category">
+        <option value="">All categories</option>
+        {% for c in all_categories %}<option value="{{ c.id }}" {% if category == c.id|string %}selected{% endif %}>{{ c.name }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-6 col-md-3">
+      <select class="form-select" name="sort" aria-label="Sort">
+        <option value="newest" {% if sort=='newest' %}selected{% endif %}>Newest</option>
+        <option value="price_asc" {% if sort=='price_asc' %}selected{% endif %}>Price: Low to High</option>
+        <option value="price_desc" {% if sort=='price_desc' %}selected{% endif %}>Price: High to Low</option>
+      </select>
+    </div>
+    <div class="col-12 col-md-2"><button class="btn btn-glow w-100"><i class="bi bi-funnel"></i> Apply</button></div>
+  </div>
+</form>
+
+<div class="cat-pills mb-3">
+  <a class="pill {{ 'active' if not category }}" href="/products?q={{ q|urlencode }}&sort={{ sort }}">All</a>
+  {% for c in all_categories %}<a class="pill {{ 'active' if category == c.id|string }}" href="/products?category={{ c.id }}&q={{ q|urlencode }}&sort={{ sort }}">{{ c.name }}</a>{% endfor %}
+</div>
+
+<p class="text-muted small mb-3"><i class="bi bi-grid me-1"></i>{{ products|length }} product{{ '' if products|length == 1 else 's' }} found{% if q %} for "<b class="text-light">{{ q }}</b>"{% endif %}</p>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+  {% for p in products %}{{ product_card(p) }}{% else %}
+  <div class="col-12"><div class="glass empty"><div class="e-ic"><i class="bi bi-search"></i></div><h4>No products match your search</h4><p class="text-muted mb-3">Try a different keyword or clear the filters.</p><a href="/products" class="btn btn-glow">Clear filters</a></div></div>
+  {% endfor %}
+</div>
+{% endblock %}

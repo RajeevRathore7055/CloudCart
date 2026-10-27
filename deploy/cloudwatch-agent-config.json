@@ -1,0 +1,21 @@
+{
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/home/ubuntu/CloudCart/logs/cloudcart.log",
+            "log_group_name": "cloudcart-app-logs",
+            "log_stream_name": "{instance_id}"
+          }
+        ]
+      }
+    }
+  },
+  "metrics": {
+    "metrics_collected": {
+      "mem_used_percent": {"measurement": ["mem_used_percent"]},
+      "disk_used_percent": {"measurement": ["used_percent"], "resources": ["/"]}
+    }
+  }
+}
